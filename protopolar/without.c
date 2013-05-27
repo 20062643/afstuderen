@@ -9,8 +9,10 @@
 #include <stdlib.h>
 
 #include "polarssl/entropy.h"
+#include "polarssl/ctr_drbg.h"
+#include "polarssl/ssl.h"
 
-#define SERVER_PORT 80
+#define SERVER_PORT 443
 #define SERVER_NAME "www.google.nl"
 #define GET_REQUEST "GET / HTTP/1.1\r\nHost: www.google.nl\r\n\r\n"
 #define HTTP_1_1_END_OF_RESPONSE "0\r\n\r\n"
@@ -24,28 +26,37 @@ int main()
   struct hostent *server_host;
 
   entropy_context entropy;
+  ctr_drbg_context ctr_drbg;
+  ssl_context ssl;
+  char *pers = "ssl_example";
+
   entropy_init( &entropy );
+  ret = ctr_drbg_init(&ctr_drbg, entropy_func, &entropy, (unsigned char *) pers, strlen( pers ));
+  memset(&ssl, 0, sizeof(ssl_context) );
 
   /* start connection */
   printf("Connecting to tcp/%s/%4d...\n", SERVER_NAME, SERVER_PORT);
 
-  server_host = gethostbyname(SERVER_NAME);
   server_fd = socket( AF_INET, SOCK_STREAM, IPPROTO_IP );
 
-  memcpy( (void *) &server_addr.sin_addr,
-    (void *) server_host->h_addr,
-             server_host->h_length);
+  ret = net_connect( &server_fd, SERVER_NAME, SERVER_PORT );
+  ret = ssl_init( &ssl );
 
-  server_addr.sin_family = AF_INET;
-  server_addr.sin_port = htons( SERVER_PORT );
+  ssl_set_endpoint( &ssl, SSL_IS_CLIENT );
+  ssl_set_authmode( &ssl, SSL_VERIFY_NONE );
 
-  ret = connect( server_fd, (struct sockaddr *) &server_addr, sizeof( server_addr ) );
+  ssl_set_rng( &ssl, ctr_drbg_random, &ctr_drbg );
+  // ssl_set_dbg( &ssl, my_debug, stdout );
+  ssl_set_bio( &ssl, net_recv, &server_fd,
+    net_send, &server_fd );
+
+  ssl_set_ciphersuites( &ssl, ssl_default_ciphersuites );
 
   printf("ok\n");
 
   len = sprintf( (char *) buf, GET_REQUEST );
 
-  while( ( ret = write ( server_fd, buf, len ) ) <= 0 )
+  while( ( ret = ssl_write ( &ssl, buf, len ) ) <= 0 )
   {
     if ( ret != 0 )
     {
@@ -64,7 +75,7 @@ int main()
   while(1)
   {
     len = BUFSIZ;
-    ret = read( server_fd, &result[result_size], len );
+    ret = ssl_read( &ssl, &result[result_size], len );
 
     printf("%s", result);
 
@@ -94,7 +105,8 @@ int main()
 
   printf("%s", result);
 
-  close( server_fd );
+  net_close( server_fd );
+  ssl_free( &ssl );
   free(result);
 
   return(0);
