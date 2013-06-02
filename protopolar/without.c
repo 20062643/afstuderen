@@ -60,7 +60,7 @@ int main()
   ssl_set_ca_chain( &ssl, &cacert, NULL, SERVER_NAME );
 
   ssl_set_rng( &ssl, ctr_drbg_random, &ctr_drbg );
-  // ssl_set_dbg( &ssl, my_debug, stderr );
+  ssl_set_dbg( &ssl, my_debug, stderr );
   ssl_set_bio( &ssl, net_recv, &server_fd,
     net_send, &server_fd );
 

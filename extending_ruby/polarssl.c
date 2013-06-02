@@ -8,4 +8,5 @@ void Init_polarssl()
 
   Init_entropy_context();
   Init_ctr_drbg_context();
+  Init_ssl_context();
 }

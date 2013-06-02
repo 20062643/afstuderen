@@ -1,5 +1,4 @@
 #include <entropy_context.h>
-#include <polarssl/entropy.h>
 
 void Init_entropy_context()
 {

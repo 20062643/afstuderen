@@ -1,0 +1,52 @@
+find_header: checking for polarssl/entropy.h... -------------------- yes
+
+"gcc-4.2 -o conftest -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0/x86_64-darwin12.2.1 -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0/ruby/backward -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0 -I. -I/opt/local/include -I/usr/local/include -I/usr/include -I'/Users/michiel/.rbenv/versions/2.0.0-p0/include'  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT     -Wno-error=shorten-64-to-32 -pipe conftest.c  -L. -L/Users/michiel/.rbenv/versions/2.0.0-p0/lib -L/opt/local/lib -L/usr/local/lib -L/Users/michiel/.rbenv/versions/2.0.0-p0/lib -L/usr/lib -L. -L'/Users/michiel/.rbenv/versions/2.0.0-p0/lib'      -lruby-static  -lpthread -ldl -lobjc "
+ld: warning: directory not found for option '-L/opt/local/lib'
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(void) {return 0;}
+/* end */
+
+"gcc-4.2 -E -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0/x86_64-darwin12.2.1 -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0/ruby/backward -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0 -I. -I/opt/local/include -I/usr/local/include -I/usr/include -I'/Users/michiel/.rbenv/versions/2.0.0-p0/include'  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT     -Wno-error=shorten-64-to-32 -pipe  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <polarssl/entropy.h>
+/* end */
+
+--------------------
+
+find_library: checking for entropy_init()... -------------------- -lpolarssl
+
+"gcc-4.2 -o conftest -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0/x86_64-darwin12.2.1 -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0/ruby/backward -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0 -I. -I/opt/local/include -I/usr/local/include -I/usr/include -I'/Users/michiel/.rbenv/versions/2.0.0-p0/include'  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT     -Wno-error=shorten-64-to-32 -pipe conftest.c  -L. -L/Users/michiel/.rbenv/versions/2.0.0-p0/lib -L/opt/local/lib -L/usr/local/lib -L/Users/michiel/.rbenv/versions/2.0.0-p0/lib -L/usr/lib -L. -L'/Users/michiel/.rbenv/versions/2.0.0-p0/lib'      -lruby-static -lpolarssl  -lpthread -ldl -lobjc "
+conftest.c: In function ‘t’:
+conftest.c:6: error: ‘entropy_init’ undeclared (first use in this function)
+conftest.c:6: error: (Each undeclared identifier is reported only once
+conftest.c:6: error: for each function it appears in.)
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: /*top*/
+4: int main(void) {return 0;}
+5: extern int t(void);
+6: int t(void) { void ((*volatile p)()); p = (void ((*)()))entropy_init; return 0; }
+/* end */
+
+"gcc-4.2 -o conftest -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0/x86_64-darwin12.2.1 -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0/ruby/backward -I/Users/michiel/.rbenv/versions/2.0.0-p0/include/ruby-2.0.0 -I. -I/opt/local/include -I/usr/local/include -I/usr/include -I'/Users/michiel/.rbenv/versions/2.0.0-p0/include'  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT     -Wno-error=shorten-64-to-32 -pipe conftest.c  -L. -L/Users/michiel/.rbenv/versions/2.0.0-p0/lib -L/opt/local/lib -L/usr/local/lib -L/Users/michiel/.rbenv/versions/2.0.0-p0/lib -L/usr/lib -L. -L'/Users/michiel/.rbenv/versions/2.0.0-p0/lib'      -lruby-static -lpolarssl  -lpthread -ldl -lobjc "
+ld: warning: directory not found for option '-L/opt/local/lib'
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: /*top*/
+4: int main(void) {return 0;}
+5: extern int t(void);
+6: int t(void) { entropy_init(); return 0; }
+/* end */
+
+--------------------
+
