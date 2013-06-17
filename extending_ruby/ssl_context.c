@@ -93,6 +93,9 @@ static VALUE ssl_context_ssl_read(VALUE self)
 {
   ssl_context *ssl;
   Data_Get_Struct(self, ssl_context, ssl);
+  VALUE ret;
+
+  ret = Qnil;
 
   if(rb_block_given_p())
   {
@@ -114,9 +117,20 @@ static VALUE ssl_context_ssl_read(VALUE self)
         rb_yield(str);
       }
     }
+  } else {
+    int len;
+    char chunk[BUFSIZ];
+    VALUE str;
+
+    memset(chunk, 0, BUFSIZ);
+
+    len = ssl_read( ssl, chunk, BUFSIZ - 1 );
+    str = rb_str_new2(chunk);
+
+    ret = str;
   }
 
-  return Qnil;
+  return ret;
 }
 
 static void ssl_context_free(void *p) {

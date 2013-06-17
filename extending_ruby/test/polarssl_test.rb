@@ -21,6 +21,8 @@ ssl_context.write("GET / HTTP/1.1\r\nHost: www.polarssl.org\r\n\r\n")
 
 response = ""
 
+puts ssl_context.read
+
 ssl_context.read do |chunk|
   response << chunk
   puts chunk

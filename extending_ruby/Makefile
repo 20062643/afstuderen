@@ -80,7 +80,7 @@ warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long 
 CFLAGS   = -fno-common   -Wno-error=shorten-64-to-32 -pipe $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
 DEFS     = 
-CPPFLAGS =  -I/opt/local/include -I/usr/local/include -I/usr/include -I'/Users/michiel/.rbenv/versions/2.0.0-p0/include'  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT $(DEFS) $(cppflags)
+CPPFLAGS =  -I'/Users/michiel/.rbenv/versions/2.0.0-p0/include'  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT $(DEFS) $(cppflags)
 CXXFLAGS = $(CFLAGS) $(cxxflags)
 ldflags  = -L. -L'/Users/michiel/.rbenv/versions/2.0.0-p0/lib' 
 dldflags = -Wl,-undefined,dynamic_lookup -Wl,-multiply_defined,suppress 
@@ -119,8 +119,8 @@ TOUCH = exit >
 
 preload = 
 
-libpath = . $(libdir) /opt/local/lib /usr/local/lib /Users/michiel/.rbenv/versions/2.0.0-p0/lib /usr/lib
-LIBPATH =  -L. -L$(libdir) -L/opt/local/lib -L/usr/local/lib -L/Users/michiel/.rbenv/versions/2.0.0-p0/lib -L/usr/lib
+libpath = . $(libdir) /Users/michiel/.rbenv/versions/2.0.0-p0/lib
+LIBPATH =  -L. -L$(libdir) -L/Users/michiel/.rbenv/versions/2.0.0-p0/lib
 DEFFILE = 
 
 CLEANFILES = mkmf.log
