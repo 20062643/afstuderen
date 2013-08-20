@@ -6,10 +6,9 @@
 int main()
 {
   unsigned char key[16] = "klein";
-  const unsigned char *input = "{my_json: 'yes', mit: 'awesome', cool: 'very cool'}";
+  const char *input = "{my_json: 'yes', mit: 'awesomde', cool: 'very cool', wow: 'Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam id dolor id nibh ultricies vehicula ut id elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.}";
 
   unsigned char output[strlen(input)];
-  unsigned char original_input[1024];
 
   aes_context ctx;
 
@@ -25,16 +24,18 @@ int main()
 
   aes_setkey_enc(&ctx, key, 128);
 
-  aes_crypt_ctr(&ctx, length, &nc_off, nonce_counter, stream_block, input, output);
+  aes_crypt_ctr(&ctx, length, &nc_off, nonce_counter, stream_block, (unsigned char *) input, output);
 
-  printf("%d\n", nc_off);
+  printf("%zu\n", nc_off);
+  printf("%zu\n", strlen(input));
 
-  unsigned char dst[1024];
-  size_t dlen = 1024;
+  unsigned char dst[( (length / 3) * 4) + 1];
 
-  base64_encode(dst, &dlen, output, strlen(input));
+  size_t dlen = ( (length / 3) * 4) + 1;
 
-  printf("%s\n", dst);
+  base64_encode(dst, &dlen, output, sizeof(output));
+
+  printf("%s\n%zu\n", dst, strlen((char *)dst));
 
   return 0;
 }
