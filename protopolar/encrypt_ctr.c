@@ -1,12 +1,13 @@
 #include "stdio.h"
+#include "math.h"
 
 #include "polarssl/aes.h"
 #include "polarssl/base64.h"
 
 int main()
 {
-  unsigned char key[16] = "klein";
-  const char *input = "{my_json: 'yes', mit: 'awesomde', cool: 'very cool', wow: 'Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam id dolor id nibh ultricies vehicula ut id elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.}";
+  unsigned char key[16] = "polarssl";
+  const char *input = "{batsmy_json: 'yes', mit: 'awesomde', cool: 'very cool', wow: 'Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nullam id dolor id nibh ultricies vehicula ut id elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.}";
 
   unsigned char output[strlen(input)];
 
@@ -26,12 +27,12 @@ int main()
 
   aes_crypt_ctr(&ctx, length, &nc_off, nonce_counter, stream_block, (unsigned char *) input, output);
 
-  printf("%zu\n", nc_off);
-  printf("%zu\n", strlen(input));
+  // printf("%zu\n", nc_off);
+  // printf("%zu\n", strlen(input));
 
-  unsigned char dst[( (length / 3) * 4) + 1];
+  unsigned char dst[(int) ceil(length * 1.4)];
 
-  size_t dlen = ( (length / 3) * 4) + 1;
+  size_t dlen = (int) ceil(length * 1.4);
 
   base64_encode(dst, &dlen, output, sizeof(output));
 
