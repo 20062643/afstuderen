@@ -27,5 +27,7 @@ int main()
 
   printf("%s\n", dst);
 
+  cipher_free_ctx(&ctx);
+
   return 0;
 }
